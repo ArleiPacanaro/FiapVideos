@@ -1,0 +1,14 @@
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\api\VideoRestController.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\external\repository\IMongoDB.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\enumeration\VideosCategorias.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\gateways\VideoGateway.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\external\model\VideoModel.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\infra\ValidationHandler.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\records\VideoRecord.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\presenters\VideoPresenter.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\controllers\VideoController.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\entities\VideoEntity.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\infra\PageableWebFluxConfiguration.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\interfaces\IVideoGateway.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\VideosApplication.java
+C:\FIAP_POS\fase04\videos\src\main\java\com\challenge\videos\usecase\registrarVideoUseCase.java

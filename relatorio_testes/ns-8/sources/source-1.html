@@ -1,0 +1,151 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > VideoMapper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.challenge.videos.mappers</a>
+</div>
+
+<h1>Coverage Summary for Class: VideoMapper (com.challenge.videos.mappers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VideoMapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,2%
+  </span>
+  <span class="absValue">
+    (20/21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.challenge.videos.mappers;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.challenge.videos.external.model.VideoModel;
+<i class="no-highlight">4</i>&nbsp;import com.challenge.videos.records.VideoRecord;
+<i class="no-highlight">5</i>&nbsp;
+<b class="nc"><i class="no-highlight">6</i>&nbsp;public class VideoMapper {</b>
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;    public static VideoModel toModelByDTO(VideoRecord dto) {
+<i class="no-highlight">9</i>&nbsp;
+<b class="fc"><i class="no-highlight">10</i>&nbsp;        VideoModel videoModel = new VideoModel();</b>
+<i class="no-highlight">11</i>&nbsp;
+<b class="fc"><i class="no-highlight">12</i>&nbsp;        videoModel.setId(dto.id());</b>
+<b class="fc"><i class="no-highlight">13</i>&nbsp;        videoModel.setTitulo(dto.titulo());</b>
+<b class="fc"><i class="no-highlight">14</i>&nbsp;        videoModel.setDescricao(dto.descricao());</b>
+<b class="fc"><i class="no-highlight">15</i>&nbsp;        videoModel.setUrlVideo(dto.urlVideo());</b>
+<b class="fc"><i class="no-highlight">16</i>&nbsp;        videoModel.setDataPublicacao(dto.dataPublicacao());</b>
+<b class="fc"><i class="no-highlight">17</i>&nbsp;        videoModel.setCategoria(dto.categoria());</b>
+<b class="fc"><i class="no-highlight">18</i>&nbsp;        videoModel.setFavorito(dto.favorito());</b>
+<b class="fc"><i class="no-highlight">19</i>&nbsp;        videoModel.setVisualizacoes(dto.visualizacoes());</b>
+<i class="no-highlight">20</i>&nbsp;
+<b class="fc"><i class="no-highlight">21</i>&nbsp;        return videoModel;</b>
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;    }
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;    public static VideoRecord toDTOByModel(VideoModel entity)
+<i class="no-highlight">26</i>&nbsp;    {
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        VideoRecord videoDTO = new VideoRecord</b>
+<i class="no-highlight">28</i>&nbsp;                (
+<b class="fc"><i class="no-highlight">29</i>&nbsp;                    entity.getId(),</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;                    entity.getTitulo(),</b>
+<b class="fc"><i class="no-highlight">31</i>&nbsp;                    entity.getDescricao(),</b>
+<b class="fc"><i class="no-highlight">32</i>&nbsp;                    entity.getUrlVideo(),</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;                    entity.getDataPublicacao(),</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;                    entity.getCategoria(),</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;                    entity.getFavorito(),</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;                    entity.getVisualizacoes()</b>
+<i class="no-highlight">37</i>&nbsp;        );
+<i class="no-highlight">38</i>&nbsp;
+<b class="fc"><i class="no-highlight">39</i>&nbsp;        return videoDTO;</b>
+<i class="no-highlight">40</i>&nbsp;
+<i class="no-highlight">41</i>&nbsp;    }
+<i class="no-highlight">42</i>&nbsp;
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;
+<i class="no-highlight">45</i>&nbsp;
+<i class="no-highlight">46</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-29 11:15</div>
+</div>
+</body>
+</html>

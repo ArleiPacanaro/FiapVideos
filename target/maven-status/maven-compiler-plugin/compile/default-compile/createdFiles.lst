@@ -1,0 +1,15 @@
+com\challenge\videos\api\VideoRestController.class
+com\challenge\videos\enumeration\VideosCategorias.class
+com\challenge\videos\presenters\VideoPresenter.class
+com\challenge\videos\external\model\VideoModel$VideoModelBuilder.class
+com\challenge\videos\interfaces\IVideoGateway.class
+com\challenge\videos\external\repository\IMongoDB.class
+com\challenge\videos\external\model\VideoModel.class
+com\challenge\videos\VideosApplication.class
+com\challenge\videos\gateways\VideoGateway.class
+com\challenge\videos\usecase\registrarVideoUseCase.class
+com\challenge\videos\infra\ValidationHandler.class
+com\challenge\videos\records\VideoRecord.class
+com\challenge\videos\controllers\VideoController.class
+com\challenge\videos\entities\VideoEntity.class
+com\challenge\videos\infra\PageableWebFluxConfiguration.class

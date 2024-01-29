@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > VideoRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.challenge.videos.external.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: VideoRepository (com.challenge.videos.external.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">VideoRepository$MockitoMock$aZx3TDDf</td>
+  </tr>
+  <tr>
+    <td class="name">VideoRepository$MockitoMock$aZx3TDDf$auxiliary$GRlyYlhO</td>
+  </tr>
+  <tr>
+    <td class="name">VideoRepository$MockitoMock$aZx3TDDf$auxiliary$JE1lkfUk</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.challenge.videos.external.repository;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.challenge.videos.enumeration.VideosCategorias;
+<i class="no-highlight">4</i>&nbsp;import com.challenge.videos.external.model.VideoEstatisticasModel;
+<i class="no-highlight">5</i>&nbsp;import com.challenge.videos.external.model.VideoModel;
+<i class="no-highlight">6</i>&nbsp;import java.time.LocalDate;
+<i class="no-highlight">7</i>&nbsp;import org.springframework.data.domain.Pageable;
+<i class="no-highlight">8</i>&nbsp;import org.springframework.data.mongodb.repository.Aggregation;
+<i class="no-highlight">9</i>&nbsp;import org.springframework.data.mongodb.repository.Query;
+<i class="no-highlight">10</i>&nbsp;import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+<i class="no-highlight">11</i>&nbsp;import org.springframework.stereotype.Repository;
+<i class="no-highlight">12</i>&nbsp;import reactor.core.publisher.Flux;
+<i class="no-highlight">13</i>&nbsp;import reactor.core.publisher.Mono;
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;/**
+<i class="no-highlight">17</i>&nbsp; * Interface da Repositório de Videos com MONGODB Reativo.
+<i class="no-highlight">18</i>&nbsp; */
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;@Repository
+<i class="no-highlight">21</i>&nbsp;public interface VideoRepository extends ReactiveMongoRepository&lt;VideoModel, Integer&gt; {
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;  Flux&lt;VideoModel&gt; findAllBy(Pageable pageable);
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;  Flux&lt;VideoModel&gt; findByTituloContainingIgnoreCase(String titulo);
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;  Flux&lt;VideoModel&gt; findByDataPublicacao(LocalDate dataDePublicacao);
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;  Flux&lt;VideoModel&gt; findByCategoria(VideosCategorias categorias);
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;  @Query(&quot;{ $and: [{&#39;categoria&#39;:{$eq:?0}},{&#39;favorito&#39;:{$gte:?1}}] }&quot;)
+<i class="no-highlight">32</i>&nbsp;  Flux&lt;VideoModel&gt; ListarVideosRecomendados(VideosCategorias categorias, Integer qtdFavoritados);
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;  @Aggregation(&quot;{ $group : { _id : null ,qtdTotalVideosFavoritos : { $sum : $favorito }&quot;
+<i class="no-highlight">35</i>&nbsp;          + &quot;, avgTotalVideosAssistidos : {$avg : $visualizacoes}  } }&quot;)
+<i class="no-highlight">36</i>&nbsp;  Mono&lt;VideoEstatisticasModel&gt; listarEstatisticas();
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-01-29 11:15</div>
+</div>
+</body>
+</html>
