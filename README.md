@@ -43,10 +43,10 @@
 
 
 
-<h2><strong>Pessoas Desenvolvedoras do Projeto</strong></h2>
+<h2 align="center"><strong>Pessoas Desenvolvedoras do Projeto</strong></h2>
 <p> Grupo 39 : RM350113 , RM349894 , RM350459 e 350127</p>
 <p></p>
 
-<h2><strong>Conclusão</strong></h2>
+<h2 align="center"><strong>Conclusão</strong></h2>
  </body>
 </html>
