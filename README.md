@@ -1,7 +1,7 @@
 <html>
    <head></head>
    <body >
-<h1 align="center"> <strong> Tech Challenge -  Streaming de Víedos - FIAP Arquitetura de Sistema em Java - 4º Fase</strong> </h1>
+<h1 align="center"> <strong> Tech Challenge -  Streaming de Vídeos - FIAP Arquitetura de Sistema em Java - 4º Fase</strong> </h1>
 <p></p>
 <p></p>
 
