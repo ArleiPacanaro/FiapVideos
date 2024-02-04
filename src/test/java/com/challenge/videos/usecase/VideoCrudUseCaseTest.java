@@ -11,13 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -36,6 +36,12 @@ public class VideoCrudUseCaseTest {
 
     private VideoCrudUseCase videoCrudUseCase;
 
+    VideoRecord videoRecord;
+    VideoModel videoModel;
+
+    VideoModel videoModel1;
+    VideoModel videoModel2;
+
     @Mock
     private VideoRepository videoRepository;
 
@@ -44,6 +50,40 @@ public class VideoCrudUseCaseTest {
 
        mock = MockitoAnnotations.openMocks(this);
        videoCrudUseCase = new VideoCrudUseCase();
+
+        // Assert
+        Integer id = 1;
+        String titulo = "Rambo1";
+        String descricao = "Filme de Guerra";
+        String urlVideo = "http://www.filmes.com.br/rambo1";
+        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
+        VideosCategorias categoria = VideosCategorias.GUERRA;
+        Integer favorito = 0;
+        Integer visualizacoes = 100;
+
+        videoRecord = new VideoRecord(
+                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes
+        );
+
+        videoModel = new VideoModel(
+                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
+
+
+        videoModel1 =  videoModel;
+        videoModel2 = new VideoModel();
+
+
+
+        videoModel2.setId(2);
+        videoModel2.setTitulo("Uma linda Mulher");
+        videoModel2.setDescricao("Filme Romance");
+        videoModel2.setDataPublicacao(LocalDate.of(1999,12,01));
+        videoModel2.setUrlVideo("http://filmes.com.br/lindamulher");
+        videoModel2.setCategoria(VideosCategorias.ROMANCE);
+        videoModel2.setFavorito(1000);
+        videoModel2.setVisualizacoes(100001);
+
+
     }
 
     // Limpar o mock da memoria.
@@ -57,22 +97,6 @@ public class VideoCrudUseCaseTest {
     @Test
     public void deveRegistrarVideo() throws IllegalAccessException {
 
-        // Assert
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 0;
-        Integer visualizacoes = 100;
-
-        VideoRecord videoRecord = new VideoRecord(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes
-        );
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
 
         when(videoRepository.save(any(VideoModel.class)))
                 .thenReturn(Mono.just(videoModel));
@@ -94,26 +118,12 @@ public class VideoCrudUseCaseTest {
     public void GerarExcecao_NoDeveAtualizarVideo_RegistroNaoExiste() {
 
         // Assert
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 0;
-        Integer visualizacoes = 100;
-
-        VideoRecord videoRecord = new VideoRecord(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes
-        );
-
+        Integer id = 10;
 
         assertThatThrownBy(() -> videoCrudUseCase.atualizarVideo(Mono.just(videoRecord),id,videoRepository))
                 .isInstanceOf(RuntimeException.class);
 
-
         verify(videoRepository, times(1)).findById(any(Integer.class));
-
 
     }
 
@@ -123,30 +133,19 @@ public class VideoCrudUseCaseTest {
 
         // Assert
         Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
         Integer favorito = 1500; // Ajuste
-        Integer visualizacoes = 100;
-
-        VideoRecord videoRecord = new VideoRecord(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes
-        );
-
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
+        videoModel.setFavorito(favorito);
 
         when(videoRepository.findById(any(Integer.class)))
                 .thenReturn(Mono.just(videoModel));
 
         var videoAtualizado = videoCrudUseCase.atualizarVideo(Mono.just(videoRecord),id,videoRepository);
 
+        // Assert
+        videoAtualizado.subscribe(mono -> {
+            assertThat(favorito).isEqualTo(videoModel.getFavorito());
+        });
         verify(videoRepository, times(1)).findById(any(Integer.class));
-
-
 
     }
 
@@ -154,7 +153,7 @@ public class VideoCrudUseCaseTest {
     @Test
     public void GerarExcecao_NoDeveDeletarVideo_QuandoIdNaoExiste() {
 
-        Integer id = 1;
+        Integer id = 10;
         assertThatThrownBy(() -> videoCrudUseCase.deletarVideo(id,videoRepository))
                 .isInstanceOf(RuntimeException.class);
 
@@ -169,16 +168,6 @@ public class VideoCrudUseCaseTest {
 
 
         Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 1500;
-        Integer visualizacoes = 100;
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
 
         when(videoRepository.findById(any(Integer.class)))
                 .thenReturn(Mono.just(videoModel));
@@ -195,47 +184,32 @@ public class VideoCrudUseCaseTest {
     @Test
     public void DevelistarVideos() {
 
-        VideoModel videoModel1  = new VideoModel();
-        VideoModel videoModel2  = new VideoModel();
 
-        Integer page = 1;
+
+        Integer page = 0;
         Integer size = 10;
 
         PageRequest pageRequest =
                 PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dataPublicacao"));
 
-        videoModel1.setId(1);
-        videoModel1.setTitulo("Rambo1");
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(VideosCategorias.GUERRA);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
+        List<VideoModel> videos = Arrays.asList(videoModel);
 
-
-        videoModel2.setId(2);
-        videoModel2.setTitulo("Uma linda Mulher");
-        videoModel2.setDescricao("Filme Romance");
-        videoModel2.setDataPublicacao(LocalDate.of(1999,12,01));
-        videoModel2.setUrlVideo("http://filmes.com.br/lindamulher");
-        videoModel2.setCategoria(VideosCategorias.ROMANCE);
-        videoModel2.setFavorito(1000);
-        videoModel2.setVisualizacoes(100001);
-
-        List<VideoModel> videos = Arrays.asList(videoModel1,videoModel2);
-
-        when(videoRepository.findAll())
+        when(videoRepository.findAllBy(any(Pageable.class)))
                 .thenReturn((Flux.fromIterable(videos)));
 
-        var lista =  videoRepository.findAll();
 
-        var lista2 = videoCrudUseCase.listarVideos(page,size,videoRepository);
+        var videoModelFlux = this.videoRepository.findAllBy(pageRequest);
+
+        Mono<Page<VideoModel>> x =  videoModelFlux.collectList()
+                .zipWith(videoRepository.findAllBy(pageRequest).count())
+                .map(p -> new PageImpl<>(p.getT1(), pageRequest, p.getT2()));
+
 
 
         // Assert
-        assertEquals(videos, lista.collectList().block());
-        verify(videoRepository, times(1)).findAll();
+        //assertEquals(videos, lista.collectList().block());
+        assertThat(x.block().getTotalElements()).isEqualTo(1);
+        verify(videoRepository, times(2)).findAllBy(any(Pageable.class));
 
     }
 
@@ -244,17 +218,7 @@ public class VideoCrudUseCaseTest {
     @Test
     public  void  develistarVideosPorTitulo() {
 
-        VideoModel videoModel1  = new VideoModel();
         String nomeFilme = "Rambo1";
-
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(VideosCategorias.GUERRA);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
 
         List<VideoModel> videos = Arrays.asList(videoModel1);
 
@@ -262,7 +226,6 @@ public class VideoCrudUseCaseTest {
                 .thenReturn((Flux.fromIterable(videos)));
 
         var result = videoCrudUseCase.listarVideosPorTitulo(nomeFilme,videoRepository);
-
 
         // Assert
 
@@ -275,18 +238,8 @@ public class VideoCrudUseCaseTest {
     @Test
     public  void develistarVideosPorData() {
 
-        VideoModel videoModel1  = new VideoModel();
         LocalDate dataPulicacao = LocalDate.of(1985,10,01);
         String nomeFilme = "Rambo1";
-
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(VideosCategorias.GUERRA);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
 
         List<VideoModel> videos = Arrays.asList(videoModel1);
 
@@ -295,9 +248,7 @@ public class VideoCrudUseCaseTest {
 
         var result = videoCrudUseCase.listarVideosPorData(dataPulicacao,videoRepository);
 
-
         // Assert
-
         assertEquals(videos, result.collectList().block());
         verify(videoRepository, times(1)).findByDataPublicacao(any(LocalDate.class));
 
@@ -307,19 +258,8 @@ public class VideoCrudUseCaseTest {
     @Test
     public  void develistarVideosPorCategoria() {
 
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
-        VideosCategorias categoria = VideosCategorias.GUERRA;
 
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(categoria);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
+        VideosCategorias categoria = VideosCategorias.GUERRA;
 
         List<VideoModel> videos = Arrays.asList(videoModel1);
         when(videoRepository.findByCategoria(categoria))
@@ -338,20 +278,11 @@ public class VideoCrudUseCaseTest {
     @Test
     public void develistarVideosRecomendados() {
 
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
         VideosCategorias categoria = VideosCategorias.GUERRA;
         Integer qtd = 100;
 
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
         videoModel1.setCategoria(categoria);
         videoModel1.setFavorito(qtd);
-        videoModel1.setVisualizacoes(10000);
 
         List<VideoModel> videos = Arrays.asList(videoModel1);
 
@@ -360,10 +291,7 @@ public class VideoCrudUseCaseTest {
 
         var result = videoCrudUseCase.listarVideosRecomendados(categoria,videoRepository);
 
-
-        // Assert
-
-        //assertEquals(videos, result.collectList().block());
+ //assertEquals(videos, result.collectList().block());
         verify(videoRepository, times(1))
                 .ListarVideosRecomendados(any(VideosCategorias.class),any(Integer.class));
 
@@ -374,20 +302,7 @@ public class VideoCrudUseCaseTest {
     @Test
     public void deveBuscarEstatisticas() {
 
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
-        VideosCategorias categoria = VideosCategorias.GUERRA;
         Integer qtd = 100;
-
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(categoria);
-        videoModel1.setFavorito(qtd);
-        videoModel1.setVisualizacoes(10000);
 
         VideoEstatisticasModel videoEstatisticasModel = new VideoEstatisticasModel(qtd,10000);
 

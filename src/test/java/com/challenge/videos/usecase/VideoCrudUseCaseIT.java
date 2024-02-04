@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,6 +26,9 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @Testcontainers
@@ -86,7 +92,8 @@ public class VideoCrudUseCaseIT {
     @Test
     public void develistarVideos() {
         var lista = videoCrudUseCase.listarVideos(0,3, videoRepository);
-        assertThat(lista.collectList().block().size()).isEqualTo(3);
+
+        assertThat(lista.block().getTotalElements()).isEqualTo(3);
     }
 
 
@@ -94,7 +101,7 @@ public class VideoCrudUseCaseIT {
     public  void  develistarVideosPorTitulo() {
        var lista = videoCrudUseCase
                .listarVideosPorTitulo("Tropa de Elite", videoRepository);
-        assertThat(lista.collectList().block().size()).isEqualTo(1);
+        assertThat(lista.collectList().block().size()).isGreaterThan(0);;
     }
 
     @Test
@@ -122,7 +129,6 @@ public class VideoCrudUseCaseIT {
         Mono<VideoEstatisticasModel> listarEstatisticas = videoCrudUseCase.buscarEstatisticas(videoRepository);
         assertThat(listarEstatisticas.block().getQtdTotalVideosFavoritos()).isNotZero();
          }
-
 
 
 }

@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import com.challenge.videos.gateways.IVideoGateway;
 import com.challenge.videos.mappers.VideoMapper;
 import com.challenge.videos.records.VideoRecord;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,8 +56,15 @@ public class VideoGateway implements IVideoGateway {
   }
 
   @Override
-  public Flux<VideoModel> listarVideos(Pageable pageable) {
-    return this.videoRepository.findAllBy(pageable);
+  public Mono<Page<VideoModel>> listarVideos(Pageable pageable) {
+
+    var videoModelFlux = this.videoRepository.findAllBy(pageable);
+
+    return  videoModelFlux.collectList()
+            .zipWith(videoRepository.findAllBy(pageable).count())
+            .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
+
+
   }
 
   @Override

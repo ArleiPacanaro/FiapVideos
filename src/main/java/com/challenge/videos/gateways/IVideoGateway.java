@@ -8,6 +8,7 @@ import com.challenge.videos.external.model.VideoModel;
 import java.time.LocalDate;
 
 import com.challenge.videos.records.VideoRecord;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,7 @@ public interface IVideoGateway {
 
   public Mono<Void> deletarVideoPorId(Integer id);
 
-  public Flux<VideoModel> listarVideos(Pageable pageable);
+  public Mono<Page<VideoModel>> listarVideos(Pageable pageable);
 
   public Flux<VideoModel> listarVideosPorTitulo(String titulo);
 

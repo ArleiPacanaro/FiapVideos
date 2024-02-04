@@ -47,35 +47,36 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">8</i>&nbsp;import java.time.LocalDate;
 <i class="no-highlight">9</i>&nbsp;
 <i class="no-highlight">10</i>&nbsp;import com.challenge.videos.records.VideoRecord;
-<i class="no-highlight">11</i>&nbsp;import org.springframework.data.domain.Pageable;
-<i class="no-highlight">12</i>&nbsp;import reactor.core.publisher.Flux;
-<i class="no-highlight">13</i>&nbsp;import reactor.core.publisher.Mono;
-<i class="no-highlight">14</i>&nbsp;
-<i class="no-highlight">15</i>&nbsp;/**
-<i class="no-highlight">16</i>&nbsp; * Interface Adapter\Port para implementar o Gateway, L do Solid.
-<i class="no-highlight">17</i>&nbsp; */
-<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;import org.springframework.data.domain.Page;
+<i class="no-highlight">12</i>&nbsp;import org.springframework.data.domain.Pageable;
+<i class="no-highlight">13</i>&nbsp;import reactor.core.publisher.Flux;
+<i class="no-highlight">14</i>&nbsp;import reactor.core.publisher.Mono;
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;/**
+<i class="no-highlight">17</i>&nbsp; * Interface Adapter\Port para implementar o Gateway, L do Solid.
+<i class="no-highlight">18</i>&nbsp; */
 <i class="no-highlight">19</i>&nbsp;
-<i class="no-highlight">20</i>&nbsp;public interface IVideoGateway {
-<i class="no-highlight">21</i>&nbsp;
-<i class="no-highlight">22</i>&nbsp;  public Mono&lt;VideoRecord&gt; registrarVideo(Mono&lt;VideoRecord&gt; videoRecord);
-<i class="no-highlight">23</i>&nbsp;
-<i class="no-highlight">24</i>&nbsp;  public Mono&lt;VideoModel&gt; buscarVideoPorId(Integer id);
-<i class="no-highlight">25</i>&nbsp;
-<i class="no-highlight">26</i>&nbsp;  public Mono&lt;Void&gt; deletarVideoPorId(Integer id);
-<i class="no-highlight">27</i>&nbsp;
-<i class="no-highlight">28</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideos(Pageable pageable);
-<i class="no-highlight">29</i>&nbsp;
-<i class="no-highlight">30</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorTitulo(String titulo);
-<i class="no-highlight">31</i>&nbsp;
-<i class="no-highlight">32</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorDataPublicacao(LocalDate dataDePublicacao);
-<i class="no-highlight">33</i>&nbsp;
-<i class="no-highlight">34</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorCategoria(VideosCategorias categorias);
-<i class="no-highlight">35</i>&nbsp;
-<i class="no-highlight">36</i>&nbsp;  Flux&lt;VideoModel&gt; listarVideosRecomendados(VideosCategorias categoria, Integer qtdFavoritados);
-<i class="no-highlight">37</i>&nbsp;
-<i class="no-highlight">38</i>&nbsp;  Mono&lt;VideoEstatisticasModel&gt; listarEstatisticas();
-<i class="no-highlight">39</i>&nbsp;}
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;public interface IVideoGateway {
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;  public Mono&lt;VideoRecord&gt; registrarVideo(Mono&lt;VideoRecord&gt; videoRecord);
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;  public Mono&lt;VideoModel&gt; buscarVideoPorId(Integer id);
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;  public Mono&lt;Void&gt; deletarVideoPorId(Integer id);
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;  public Mono&lt;Page&lt;VideoModel&gt;&gt; listarVideos(Pageable pageable);
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorTitulo(String titulo);
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorDataPublicacao(LocalDate dataDePublicacao);
+<i class="no-highlight">34</i>&nbsp;
+<i class="no-highlight">35</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorCategoria(VideosCategorias categorias);
+<i class="no-highlight">36</i>&nbsp;
+<i class="no-highlight">37</i>&nbsp;  Flux&lt;VideoModel&gt; listarVideosRecomendados(VideosCategorias categoria, Integer qtdFavoritados);
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;  Mono&lt;VideoEstatisticasModel&gt; listarEstatisticas();
+<i class="no-highlight">40</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -102,7 +103,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-01-29 11:15</div>
+    <div style="float:right;">generated on 2024-02-04 18:22</div>
 </div>
 </body>
 </html>

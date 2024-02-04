@@ -43,6 +43,8 @@ public class VideoRestControllerTest {
     @Autowired
     private WebTestClient webTestClient;
 
+    VideoRecord videoRecord;
+    VideoModel videoModel;
 
     @BeforeEach
     public void setUp() {
@@ -56,10 +58,11 @@ public class VideoRestControllerTest {
         Integer favorito = 1500;
         Integer visualizacoes = 100;
 
-        VideoModel videoModel = new VideoModel(
+        videoRecord = new VideoRecord(
                 id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
 
-        //Page<VideoRecord> page = new PageImpl<>(Collections.singletonList(VideoRecord));
+        videoModel = new VideoModel(
+                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
 
 
 
@@ -68,20 +71,6 @@ public class VideoRestControllerTest {
     @Test
     void deveRegistrarVideo() {
 
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 1500;
-        Integer visualizacoes = 100;
-
-        VideoRecord videoRecord = new VideoRecord(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
 
         when(videoRepository.save(any(VideoModel.class)))
                 .thenReturn(Mono.just(videoModel));
@@ -100,21 +89,11 @@ public class VideoRestControllerTest {
     @Test
     void deveAtualizarVideo() {
 
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
         //Ajuste
         Integer favorito = 1700;
         Integer visualizacoes = 100;
-
-        VideoRecord videoRecord = new VideoRecord(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
+        videoModel.setFavorito(favorito);
+        videoModel.setVisualizacoes(visualizacoes);
 
 
         when(videoRepository.findById(any(Integer.class)))
@@ -133,18 +112,6 @@ public class VideoRestControllerTest {
 
     @Test
     void deveDeletarVideo() {
-
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 1500;
-        Integer visualizacoes = 100;
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
 
 
         webTestClient.delete()
@@ -165,75 +132,21 @@ public class VideoRestControllerTest {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 1500;
-        Integer visualizacoes = 100;
-
-        VideoRecord videoRecord = new VideoRecord(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
-
-        VideoModel videoModel = new VideoModel(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
-
-        VideoEntity videoEntity= new VideoEntity(
-                id, titulo,  descricao, urlVideo, dataPublicacao, categoria, favorito, visualizacoes);
-
-
-        List<VideoModel> videos = Arrays.asList(videoModel);
-        List<VideoRecord> videosRecord = Arrays.asList(videoRecord);
-
-        PageRequest pageRequest =
-                PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "dataPublicacao"));
-
 
         Page<VideoModel> pagina = new PageImpl<>(Collections.singletonList(videoModel));
 
-         /*
 
-        when(videoCrudUseCase.listarVideos(page, size, videoRepository)).thenReturn(Mono.just(pagina));
+        when(videoCrudUseCase.listarVideos(any(Integer.class),any(Integer.class),any(VideoRepository.class)))
+                .thenReturn((Mono.just(pagina)));
+
 
         WebTestClient.ResponseSpec response = webTestClient.get()
-                .uri("/videos")
+                .uri("/videos/listar?page=0&size=2")
                 .exchange();
 
         response.expectStatus().isOk()
                 .expectBody()
-                .consumeWith(System.out::println)
-                .jsonPath("$.content[0].id").isEqualTo("1")
-
-
-
-        when(videoCrudUseCase.listarVideos(page, size, videoRepository).th(
-
-        videoCrudUseCase.listarVideos(page, size, videoRepository)
-                .collectList()
-                .zipWith(videoRepository.findAllBy(pageable).count())
-                .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()))
-        );
-
-
-        when(videoCrudUseCase.listarVideos(page, size, videoRepository)
-                .collectList()
-                .zipWith(videoRepository.findAllBy(pageable).count())
-                .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2())))
-                .thenReturn(Mono<Page<videos>>);
-
-
-
-
-         */
-
-
-        webTestClient.get()
-                .uri("/videos/listar?page=0&size=2")
-                .exchange()
-                .expectStatus().is5xxServerError();
-
+                .jsonPath("$.content[0].id").isEqualTo("1");
 
 
 
@@ -244,39 +157,13 @@ public class VideoRestControllerTest {
     @Test
     void develistarVideosPorTitulo() {
 
-        VideoModel videoModel1  = new VideoModel();
-        String nomeFilme = "Rambo1";
 
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(VideosCategorias.GUERRA);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
-
-        Integer id = 1;
-        String titulo = "Rambo1";
-        String descricao = "Filme de Guerra";
-        String urlVideo = "http://www.filmes.com.br/rambo1";
-        LocalDate dataPublicacao = LocalDate.of(1985,10,01);
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-        Integer favorito = 1500;
-        Integer visualizacoes = 100;
-
-        List<VideoModel> videos = Arrays.asList(videoModel1);
-
-
-
+        List<VideoModel> videos = Arrays.asList(videoModel);
 
         when(videoCrudUseCase.listarVideosPorTitulo(any(String.class),any(VideoRepository.class)))
                 .thenReturn((Flux.fromIterable(videos)));
 
-
-
         // Assert
-
         webTestClient.get()
                 .uri("/videos/listar/titulo?titulo=rambo1")
                 .exchange()
@@ -288,27 +175,10 @@ public class VideoRestControllerTest {
     @Test
     void  develistarVideosPorData() {
 
-
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
-
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(VideosCategorias.GUERRA);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
-
-        List<VideoModel> videos = Arrays.asList(videoModel1);
-
+        List<VideoModel> videos = Arrays.asList(videoModel);
 
         when(videoCrudUseCase.listarVideosPorData(any(LocalDate.class),any(VideoRepository.class)))
                 .thenReturn((Flux.fromIterable(videos)));
-
-
 
         // Assert
 
@@ -323,22 +193,8 @@ public class VideoRestControllerTest {
     @Test
     void develistarVideosPorCategoria() {
 
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
-        VideosCategorias categoria = VideosCategorias.GUERRA;
 
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(categoria);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
-
-        List<VideoModel> videos = Arrays.asList(videoModel1);
-
+        List<VideoModel> videos = Arrays.asList(videoModel);
 
         when(videoCrudUseCase.listarVideosPorCategoria(any(VideosCategorias.class),any(VideoRepository.class)))
                 .thenReturn((Flux.fromIterable(videos)));
@@ -346,7 +202,7 @@ public class VideoRestControllerTest {
         // Assert
 
         webTestClient.get()
-                .uri("/videos/listar/categoria?categoria=ACAO")
+                .uri("/videos/listar/categoria?categoria=GUERRA")
                 .exchange()
                 .expectStatus().isOk();
 
@@ -357,23 +213,7 @@ public class VideoRestControllerTest {
     @Test
     void develistarVideosRecomendados() {
 
-
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
-        VideosCategorias categoria = VideosCategorias.GUERRA;
-
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(categoria);
-        videoModel1.setFavorito(100);
-        videoModel1.setVisualizacoes(10000);
-
-        List<VideoModel> videos = Arrays.asList(videoModel1);
-
+        List<VideoModel> videos = Arrays.asList(videoModel);
 
         when(videoCrudUseCase.listarVideosPorCategoria(any(VideosCategorias.class),any(VideoRepository.class)))
                 .thenReturn((Flux.fromIterable(videos)));
@@ -381,34 +221,22 @@ public class VideoRestControllerTest {
         // Assert
 
         webTestClient.get()
-                .uri("/videos/recomendados?categoria=ACAO")
+                .uri("/videos/recomendados?categoria=GUERRA")
                 .exchange()
                 .expectStatus().isOk();
-
 
     }
 
     @Test
     void deveBuscarEstatistica() {
 
-        VideoModel videoModel1  = new VideoModel();
-        LocalDate dataPulicacao = LocalDate.of(1985,10,01);
-        String nomeFilme = "Rambo1";
-        VideosCategorias categoria = VideosCategorias.GUERRA;
+
         Integer qtd = 100;
 
-        videoModel1.setId(1);
-        videoModel1.setTitulo(nomeFilme);
-        videoModel1.setDescricao("Filme de Guerra Rambo1");
-        videoModel1.setDataPublicacao(LocalDate.of(1985,10,01));
-        videoModel1.setUrlVideo("http://filmes.com.br/rambo1");
-        videoModel1.setCategoria(categoria);
-        videoModel1.setFavorito(qtd);
-        videoModel1.setVisualizacoes(10000);
-
+        videoModel.setFavorito(qtd);
+        videoModel.setVisualizacoes(10000);
 
         VideoEstatisticasModel videoEstatisticasModel = new VideoEstatisticasModel(qtd,10000);
-
 
         when(videoCrudUseCase.buscarEstatisticas(any(VideoRepository.class)))
                 .thenReturn((Mono.just(videoEstatisticasModel)));
@@ -420,9 +248,6 @@ public class VideoRestControllerTest {
                 .exchange()
                 .expectStatus().isOk();
 
-
     }
-
-
 
 }
