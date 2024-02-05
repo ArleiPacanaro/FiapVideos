@@ -61,7 +61,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (14/14)
+    (17/17)
   </span>
 </td>
 </tr>
@@ -85,81 +85,90 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">10</i>&nbsp;import com.challenge.videos.gateways.IVideoGateway;
 <i class="no-highlight">11</i>&nbsp;import com.challenge.videos.mappers.VideoMapper;
 <i class="no-highlight">12</i>&nbsp;import com.challenge.videos.records.VideoRecord;
-<i class="no-highlight">13</i>&nbsp;import org.springframework.data.domain.Pageable;
-<i class="no-highlight">14</i>&nbsp;import reactor.core.publisher.Flux;
-<i class="no-highlight">15</i>&nbsp;import reactor.core.publisher.Mono;
-<i class="no-highlight">16</i>&nbsp;
-<i class="no-highlight">17</i>&nbsp;
-<i class="no-highlight">18</i>&nbsp;/**
-<i class="no-highlight">19</i>&nbsp; * Gateway do padrão da arquitetura limpa.
-<i class="no-highlight">20</i>&nbsp; */
-<i class="no-highlight">21</i>&nbsp;
-<i class="no-highlight">22</i>&nbsp;
-<i class="no-highlight">23</i>&nbsp;public class VideoGateway implements IVideoGateway {
+<i class="no-highlight">13</i>&nbsp;import org.springframework.data.domain.Page;
+<i class="no-highlight">14</i>&nbsp;import org.springframework.data.domain.PageImpl;
+<i class="no-highlight">15</i>&nbsp;import org.springframework.data.domain.Pageable;
+<i class="no-highlight">16</i>&nbsp;import reactor.core.publisher.Flux;
+<i class="no-highlight">17</i>&nbsp;import reactor.core.publisher.Mono;
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;/**
+<i class="no-highlight">21</i>&nbsp; * Gateway do padrão da arquitetura limpa.
+<i class="no-highlight">22</i>&nbsp; */
+<i class="no-highlight">23</i>&nbsp;
 <i class="no-highlight">24</i>&nbsp;
-<i class="no-highlight">25</i>&nbsp;  private final VideoRepository videoRepository;
+<i class="no-highlight">25</i>&nbsp;public class VideoGateway implements IVideoGateway {
 <i class="no-highlight">26</i>&nbsp;
-<b class="fc"><i class="no-highlight">27</i>&nbsp;  public VideoGateway(VideoRepository videoRepository) {</b>
+<i class="no-highlight">27</i>&nbsp;  private final VideoRepository videoRepository;
 <i class="no-highlight">28</i>&nbsp;
-<b class="fc"><i class="no-highlight">29</i>&nbsp;    this.videoRepository = videoRepository;</b>
-<i class="no-highlight">30</i>&nbsp;  }
-<i class="no-highlight">31</i>&nbsp;
-<i class="no-highlight">32</i>&nbsp;
+<b class="fc"><i class="no-highlight">29</i>&nbsp;  public VideoGateway(VideoRepository videoRepository) {</b>
+<i class="no-highlight">30</i>&nbsp;
+<b class="fc"><i class="no-highlight">31</i>&nbsp;    this.videoRepository = videoRepository;</b>
+<i class="no-highlight">32</i>&nbsp;  }
 <i class="no-highlight">33</i>&nbsp;
-<i class="no-highlight">34</i>&nbsp;  @Override
-<i class="no-highlight">35</i>&nbsp;  public Mono&lt;VideoRecord&gt; registrarVideo(Mono&lt;VideoRecord&gt; videoRecord) {
-<i class="no-highlight">36</i>&nbsp;
-<b class="fc"><i class="no-highlight">37</i>&nbsp;    return (</b>
-<i class="no-highlight">38</i>&nbsp;            videoRecord
-<b class="fc"><i class="no-highlight">39</i>&nbsp;                    .map(VideoMapper::toModelByDTO)</b>
-<b class="fc"><i class="no-highlight">40</i>&nbsp;                    .flatMap(videoRepository::save)</b>
-<b class="fc"><i class="no-highlight">41</i>&nbsp;                    .map(VideoMapper::toDTOByModel));</b>
-<i class="no-highlight">42</i>&nbsp;
-<i class="no-highlight">43</i>&nbsp;  }
+<i class="no-highlight">34</i>&nbsp;
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;  @Override
+<i class="no-highlight">37</i>&nbsp;  public Mono&lt;VideoRecord&gt; registrarVideo(Mono&lt;VideoRecord&gt; videoRecord) {
+<i class="no-highlight">38</i>&nbsp;
+<b class="fc"><i class="no-highlight">39</i>&nbsp;    return (</b>
+<i class="no-highlight">40</i>&nbsp;            videoRecord
+<b class="fc"><i class="no-highlight">41</i>&nbsp;                    .map(VideoMapper::toModelByDTO)</b>
+<b class="fc"><i class="no-highlight">42</i>&nbsp;                    .flatMap(videoRepository::save)</b>
+<b class="fc"><i class="no-highlight">43</i>&nbsp;                    .map(VideoMapper::toDTOByModel));</b>
 <i class="no-highlight">44</i>&nbsp;
-<i class="no-highlight">45</i>&nbsp;  @Override
-<i class="no-highlight">46</i>&nbsp;  public Mono&lt;VideoModel&gt; buscarVideoPorId(Integer id) {
-<b class="fc"><i class="no-highlight">47</i>&nbsp;    return this.videoRepository.findById(id);</b>
-<i class="no-highlight">48</i>&nbsp;  }
-<i class="no-highlight">49</i>&nbsp;
-<i class="no-highlight">50</i>&nbsp;  @Override
-<i class="no-highlight">51</i>&nbsp;  public Mono&lt;Void&gt; deletarVideoPorId(Integer id) {
-<i class="no-highlight">52</i>&nbsp;
-<b class="fc"><i class="no-highlight">53</i>&nbsp;    return this.videoRepository.deleteById(id);</b>
-<i class="no-highlight">54</i>&nbsp;  }
-<i class="no-highlight">55</i>&nbsp;
-<i class="no-highlight">56</i>&nbsp;  @Override
-<i class="no-highlight">57</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideos(Pageable pageable) {
-<b class="fc"><i class="no-highlight">58</i>&nbsp;    return this.videoRepository.findAllBy(pageable);</b>
-<i class="no-highlight">59</i>&nbsp;  }
+<i class="no-highlight">45</i>&nbsp;  }
+<i class="no-highlight">46</i>&nbsp;
+<i class="no-highlight">47</i>&nbsp;  @Override
+<i class="no-highlight">48</i>&nbsp;  public Mono&lt;VideoModel&gt; buscarVideoPorId(Integer id) {
+<b class="fc"><i class="no-highlight">49</i>&nbsp;    return this.videoRepository.findById(id);</b>
+<i class="no-highlight">50</i>&nbsp;  }
+<i class="no-highlight">51</i>&nbsp;
+<i class="no-highlight">52</i>&nbsp;  @Override
+<i class="no-highlight">53</i>&nbsp;  public Mono&lt;Void&gt; deletarVideoPorId(Integer id) {
+<i class="no-highlight">54</i>&nbsp;
+<b class="fc"><i class="no-highlight">55</i>&nbsp;    return this.videoRepository.deleteById(id);</b>
+<i class="no-highlight">56</i>&nbsp;  }
+<i class="no-highlight">57</i>&nbsp;
+<i class="no-highlight">58</i>&nbsp;  @Override
+<i class="no-highlight">59</i>&nbsp;  public Mono&lt;Page&lt;VideoModel&gt;&gt; listarVideos(Pageable pageable) {
 <i class="no-highlight">60</i>&nbsp;
-<i class="no-highlight">61</i>&nbsp;  @Override
-<i class="no-highlight">62</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorTitulo(String titulo) {
-<b class="fc"><i class="no-highlight">63</i>&nbsp;    return this.videoRepository.findByTituloContainingIgnoreCase(titulo);</b>
-<i class="no-highlight">64</i>&nbsp;  }
-<i class="no-highlight">65</i>&nbsp;
-<i class="no-highlight">66</i>&nbsp;  @Override
-<i class="no-highlight">67</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorDataPublicacao(LocalDate dataPublicacao) {
-<b class="fc"><i class="no-highlight">68</i>&nbsp;    return this.videoRepository.findByDataPublicacao(dataPublicacao);</b>
-<i class="no-highlight">69</i>&nbsp;  }
-<i class="no-highlight">70</i>&nbsp;
-<i class="no-highlight">71</i>&nbsp;  @Override
-<i class="no-highlight">72</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorCategoria(VideosCategorias categorias) {
-<b class="fc"><i class="no-highlight">73</i>&nbsp;    return this.videoRepository.findByCategoria(categorias);</b>
-<i class="no-highlight">74</i>&nbsp;  }
-<i class="no-highlight">75</i>&nbsp;
-<i class="no-highlight">76</i>&nbsp;  @Override
-<i class="no-highlight">77</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosRecomendados(VideosCategorias categoria,
-<i class="no-highlight">78</i>&nbsp;                                                   Integer qtdFavoritados) {
-<b class="fc"><i class="no-highlight">79</i>&nbsp;    return this.videoRepository.ListarVideosRecomendados(categoria, qtdFavoritados);</b>
-<i class="no-highlight">80</i>&nbsp;  }
-<i class="no-highlight">81</i>&nbsp;
-<i class="no-highlight">82</i>&nbsp;  @Override
-<i class="no-highlight">83</i>&nbsp;  public Mono&lt;VideoEstatisticasModel&gt; listarEstatisticas() {
-<b class="fc"><i class="no-highlight">84</i>&nbsp;    return  this.videoRepository.listarEstatisticas();</b>
-<i class="no-highlight">85</i>&nbsp;  }
-<i class="no-highlight">86</i>&nbsp;
-<i class="no-highlight">87</i>&nbsp;}
+<b class="fc"><i class="no-highlight">61</i>&nbsp;    var videoModelFlux = this.videoRepository.findAllBy(pageable);</b>
+<i class="no-highlight">62</i>&nbsp;
+<b class="fc"><i class="no-highlight">63</i>&nbsp;    return  videoModelFlux.collectList()</b>
+<b class="fc"><i class="no-highlight">64</i>&nbsp;            .zipWith(videoRepository.findAllBy(pageable).count())</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;            .map(p -&gt; new PageImpl&lt;&gt;(p.getT1(), pageable, p.getT2()));</b>
+<i class="no-highlight">66</i>&nbsp;
+<i class="no-highlight">67</i>&nbsp;
+<i class="no-highlight">68</i>&nbsp;  }
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;  @Override
+<i class="no-highlight">71</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorTitulo(String titulo) {
+<b class="fc"><i class="no-highlight">72</i>&nbsp;    return this.videoRepository.findByTituloContainingIgnoreCase(titulo);</b>
+<i class="no-highlight">73</i>&nbsp;  }
+<i class="no-highlight">74</i>&nbsp;
+<i class="no-highlight">75</i>&nbsp;  @Override
+<i class="no-highlight">76</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorDataPublicacao(LocalDate dataPublicacao) {
+<b class="fc"><i class="no-highlight">77</i>&nbsp;    return this.videoRepository.findByDataPublicacao(dataPublicacao);</b>
+<i class="no-highlight">78</i>&nbsp;  }
+<i class="no-highlight">79</i>&nbsp;
+<i class="no-highlight">80</i>&nbsp;  @Override
+<i class="no-highlight">81</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosPorCategoria(VideosCategorias categorias) {
+<b class="fc"><i class="no-highlight">82</i>&nbsp;    return this.videoRepository.findByCategoria(categorias);</b>
+<i class="no-highlight">83</i>&nbsp;  }
+<i class="no-highlight">84</i>&nbsp;
+<i class="no-highlight">85</i>&nbsp;  @Override
+<i class="no-highlight">86</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosRecomendados(VideosCategorias categoria,
+<i class="no-highlight">87</i>&nbsp;                                                   Integer qtdFavoritados) {
+<b class="fc"><i class="no-highlight">88</i>&nbsp;    return this.videoRepository.ListarVideosRecomendados(categoria, qtdFavoritados);</b>
+<i class="no-highlight">89</i>&nbsp;  }
+<i class="no-highlight">90</i>&nbsp;
+<i class="no-highlight">91</i>&nbsp;  @Override
+<i class="no-highlight">92</i>&nbsp;  public Mono&lt;VideoEstatisticasModel&gt; listarEstatisticas() {
+<b class="fc"><i class="no-highlight">93</i>&nbsp;    return  this.videoRepository.listarEstatisticas();</b>
+<i class="no-highlight">94</i>&nbsp;  }
+<i class="no-highlight">95</i>&nbsp;
+<i class="no-highlight">96</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -186,7 +195,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-01-29 11:15</div>
+    <div style="float:right;">generated on 2024-02-04 18:22</div>
 </div>
 </body>
 </html>

@@ -11,6 +11,7 @@ import com.challenge.videos.records.VideoRecord;
 import java.time.LocalDate;
 
 import com.challenge.videos.usecase.IVideoCrudUseCase;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class VideoCrudUseCase implements IVideoCrudUseCase {
    */
 
   @Override
-  public Flux<VideoModel> listarVideos(int page, int size, VideoRepository databaseClient) {
+  public Mono<Page<VideoModel>> listarVideos(int page, int size, VideoRepository databaseClient) {
     IVideoGateway videoGateway = new VideoGateway(databaseClient);
 
     PageRequest pageRequest =

@@ -41,6 +41,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/videos")
 public class VideoRestController {
+
   @Autowired
   private VideoCrudUseCase videoCrudUseCase;
 
@@ -95,12 +96,9 @@ public class VideoRestController {
   @GetMapping("/listar")
   public Mono<Page<VideoModel>> listarVideos(@RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "10") int size) {
-    Pageable pageable = PageRequest.of(0, 2);
 
-    return  videoCrudUseCase.listarVideos(page, size, videoRepository)
-                    .collectList()
-                    .zipWith(videoRepository.findAllBy(pageable).count())
-                    .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
+
+    return  videoCrudUseCase.listarVideos(page, size, videoRepository);
 
   }
 

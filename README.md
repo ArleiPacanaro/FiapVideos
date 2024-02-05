@@ -40,6 +40,7 @@
 <p><b>WebTestClient</b>: é uma aplicação cliente que opera em um navegador da web. Ele permite que os usuários acessem serviços e recursos baseados na web por meio de uma interface de navegador. No nosso caso iriamos usar o MockMvc porém para aplicações reativas ele não funciona e optamos por esta, pois além da facilidade de uso , ela não necessita que nossa aplicação para os testes unitários esteja em execução e utilizamos em conjunto com o Mockito e AssertJ para os testes unitários.</p>
 <p><b>SonarLint</b>: é um software detector, em tempo real, de códigos fedidos – que geram dificuldades de manutenção , bugs  e vulnerabilidades. Foi muito importante a sua utilização para termos uma escrita correta e segura, aplicamos em todas as classes do projeto com exceção as de testes. </p>
 <p><b>CheckStyle</b>: é um analisador estático de código para checar se o código fonte está de acordo com as regras de codificação, este software nos ajudou a atendermos os requisitos da utilização de boas práticas em nosso código.</p>
+<p><b>Rest Assured</b>: que nos permite testar serviços RESTful em Java de um jeito muito mais prático, basicamente, ele nos provê uma maneira de criar chamadas HTTP, como se fôssemos um cliente acessando a API. Suporta os métodos POST, GET, PUT, DELETE, OPTIONS, PATCH e HEAD e pode ser usado para validar e verificar a resposta dessas solicitações.</p>
 
 
 

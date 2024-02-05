@@ -86,131 +86,132 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">11</i>&nbsp;import java.time.LocalDate;
 <i class="no-highlight">12</i>&nbsp;
 <i class="no-highlight">13</i>&nbsp;import com.challenge.videos.usecase.IVideoCrudUseCase;
-<i class="no-highlight">14</i>&nbsp;import org.springframework.data.domain.PageRequest;
-<i class="no-highlight">15</i>&nbsp;import org.springframework.data.domain.Sort;
-<i class="no-highlight">16</i>&nbsp;import org.springframework.stereotype.Service;
-<i class="no-highlight">17</i>&nbsp;import reactor.core.publisher.Flux;
-<i class="no-highlight">18</i>&nbsp;import reactor.core.publisher.Mono;
-<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;import org.springframework.data.domain.Page;
+<i class="no-highlight">15</i>&nbsp;import org.springframework.data.domain.PageRequest;
+<i class="no-highlight">16</i>&nbsp;import org.springframework.data.domain.Sort;
+<i class="no-highlight">17</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">18</i>&nbsp;import reactor.core.publisher.Flux;
+<i class="no-highlight">19</i>&nbsp;import reactor.core.publisher.Mono;
 <i class="no-highlight">20</i>&nbsp;
-<i class="no-highlight">21</i>&nbsp;/**
-<i class="no-highlight">22</i>&nbsp; * API Rest para interface entre FRONT END e camada de CONTROLLER da Arquitetura Limpa .
-<i class="no-highlight">23</i>&nbsp; */
-<i class="no-highlight">24</i>&nbsp;
-<i class="no-highlight">25</i>&nbsp;@Service
-<b class="fc"><i class="no-highlight">26</i>&nbsp;public class VideoCrudUseCase implements IVideoCrudUseCase {</b>
-<i class="no-highlight">27</i>&nbsp;
-<i class="no-highlight">28</i>&nbsp;  /**
-<i class="no-highlight">29</i>&nbsp;   * Método de registrar os videos.
-<i class="no-highlight">30</i>&nbsp;   */
-<i class="no-highlight">31</i>&nbsp;  @Override
-<i class="no-highlight">32</i>&nbsp;  public Mono&lt;VideoRecord&gt; registrarVideo(
-<i class="no-highlight">33</i>&nbsp;          Mono&lt;VideoRecord&gt; videoRecord, VideoRepository videoRepository){
-<i class="no-highlight">34</i>&nbsp;
-<b class="fc"><i class="no-highlight">35</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(videoRepository);</b>
-<b class="fc"><i class="no-highlight">36</i>&nbsp;    return videoGateway.registrarVideo(videoRecord);</b>
-<i class="no-highlight">37</i>&nbsp;
-<i class="no-highlight">38</i>&nbsp;  }
-<i class="no-highlight">39</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;/**
+<i class="no-highlight">23</i>&nbsp; * API Rest para interface entre FRONT END e camada de CONTROLLER da Arquitetura Limpa .
+<i class="no-highlight">24</i>&nbsp; */
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;@Service
+<b class="fc"><i class="no-highlight">27</i>&nbsp;public class VideoCrudUseCase implements IVideoCrudUseCase {</b>
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;  /**
+<i class="no-highlight">30</i>&nbsp;   * Método de registrar os videos.
+<i class="no-highlight">31</i>&nbsp;   */
+<i class="no-highlight">32</i>&nbsp;  @Override
+<i class="no-highlight">33</i>&nbsp;  public Mono&lt;VideoRecord&gt; registrarVideo(
+<i class="no-highlight">34</i>&nbsp;          Mono&lt;VideoRecord&gt; videoRecord, VideoRepository videoRepository){
+<i class="no-highlight">35</i>&nbsp;
+<b class="fc"><i class="no-highlight">36</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(videoRepository);</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;    return videoGateway.registrarVideo(videoRecord);</b>
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;  }
 <i class="no-highlight">40</i>&nbsp;
-<i class="no-highlight">41</i>&nbsp;  /**
-<i class="no-highlight">42</i>&nbsp;   * Método de atualizar os videos.
-<i class="no-highlight">43</i>&nbsp;   */
-<i class="no-highlight">44</i>&nbsp;  @Override
-<i class="no-highlight">45</i>&nbsp;  public Mono&lt;VideoRecord&gt; atualizarVideo(
-<i class="no-highlight">46</i>&nbsp;          Mono&lt;VideoRecord&gt; videoRecord, Integer id, VideoRepository videoRepository) {
-<i class="no-highlight">47</i>&nbsp;
-<b class="fc"><i class="no-highlight">48</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(videoRepository);</b>
-<i class="no-highlight">49</i>&nbsp;
-<b class="fc"><i class="no-highlight">50</i>&nbsp;    var videoEncontrado = videoGateway.buscarVideoPorId(id);</b>
-<i class="no-highlight">51</i>&nbsp;
-<b class="fc"><i class="no-highlight">52</i>&nbsp;    if (videoEncontrado != null) {</b>
-<b class="fc"><i class="no-highlight">53</i>&nbsp;      return videoGateway.registrarVideo(videoRecord);</b>
-<i class="no-highlight">54</i>&nbsp;    } else {
-<b class="fc"><i class="no-highlight">55</i>&nbsp;      throw new RuntimeException(&quot;Não foi encontrado nenhum video com esse ID&quot;);</b>
-<i class="no-highlight">56</i>&nbsp;    }
-<i class="no-highlight">57</i>&nbsp;  }
-<i class="no-highlight">58</i>&nbsp;  /**
-<i class="no-highlight">59</i>&nbsp;   * Método de deletar os videos.
-<i class="no-highlight">60</i>&nbsp;   */
-<i class="no-highlight">61</i>&nbsp;
-<i class="no-highlight">62</i>&nbsp;  @Override
-<i class="no-highlight">63</i>&nbsp;  public Mono&lt;Void&gt; deletarVideo(Integer id, VideoRepository databaseClient) {
-<b class="fc"><i class="no-highlight">64</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<b class="fc"><i class="no-highlight">65</i>&nbsp;    var videoEncontrado = videoGateway.buscarVideoPorId(id);</b>
-<b class="fc"><i class="no-highlight">66</i>&nbsp;    if (videoEncontrado != null) {</b>
-<b class="fc"><i class="no-highlight">67</i>&nbsp;      return videoGateway.deletarVideoPorId(id);</b>
-<i class="no-highlight">68</i>&nbsp;    } else {
-<b class="fc"><i class="no-highlight">69</i>&nbsp;      throw new RuntimeException(</b>
-<i class="no-highlight">70</i>&nbsp;              &quot;Não foi encontrado na base um Video cadastrado com esse ID&quot;);
-<i class="no-highlight">71</i>&nbsp;    }
-<i class="no-highlight">72</i>&nbsp;  }
-<i class="no-highlight">73</i>&nbsp;
-<i class="no-highlight">74</i>&nbsp;  /**
-<i class="no-highlight">75</i>&nbsp;   * Método de deletar os videos.
-<i class="no-highlight">76</i>&nbsp;   */
-<i class="no-highlight">77</i>&nbsp;
-<i class="no-highlight">78</i>&nbsp;  @Override
-<i class="no-highlight">79</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideos(int page, int size, VideoRepository databaseClient) {
-<b class="fc"><i class="no-highlight">80</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<i class="no-highlight">81</i>&nbsp;
-<b class="fc"><i class="no-highlight">82</i>&nbsp;    PageRequest pageRequest =</b>
-<b class="fc"><i class="no-highlight">83</i>&nbsp;            PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, &quot;dataPublicacao&quot;));</b>
-<i class="no-highlight">84</i>&nbsp;
-<b class="fc"><i class="no-highlight">85</i>&nbsp;    return videoGateway.listarVideos(pageRequest);</b>
-<i class="no-highlight">86</i>&nbsp;  }
-<i class="no-highlight">87</i>&nbsp;
-<i class="no-highlight">88</i>&nbsp;  /**
-<i class="no-highlight">89</i>&nbsp;   * Método de deletar os videos.
-<i class="no-highlight">90</i>&nbsp;   */
-<i class="no-highlight">91</i>&nbsp;
-<i class="no-highlight">92</i>&nbsp;  @Override
-<i class="no-highlight">93</i>&nbsp;  public  Flux&lt;VideoModel&gt; listarVideosPorTitulo(String titulo, VideoRepository databaseClient) {
-<b class="fc"><i class="no-highlight">94</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<i class="no-highlight">95</i>&nbsp;
-<b class="fc"><i class="no-highlight">96</i>&nbsp;    return videoGateway.listarVideosPorTitulo(titulo);</b>
-<i class="no-highlight">97</i>&nbsp;  }
-<i class="no-highlight">98</i>&nbsp;
-<i class="no-highlight">99</i>&nbsp;  public  Flux&lt;VideoModel&gt; listarVideosPorData(LocalDate data, VideoRepository databaseClient) {
-<b class="fc"><i class="no-highlight">100</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<b class="fc"><i class="no-highlight">101</i>&nbsp;    return videoGateway.listarVideosPorDataPublicacao(data);</b>
-<i class="no-highlight">102</i>&nbsp;  }
-<i class="no-highlight">103</i>&nbsp;
-<i class="no-highlight">104</i>&nbsp;  public  Flux&lt;VideoModel&gt; listarVideosPorCategoria(VideosCategorias categoria,
-<i class="no-highlight">105</i>&nbsp;                                                    VideoRepository databaseClient) {
-<b class="fc"><i class="no-highlight">106</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<b class="fc"><i class="no-highlight">107</i>&nbsp;    return videoGateway.listarVideosPorCategoria(categoria);</b>
-<i class="no-highlight">108</i>&nbsp;  }
-<i class="no-highlight">109</i>&nbsp;
-<i class="no-highlight">110</i>&nbsp;  /**
-<i class="no-highlight">111</i>&nbsp;   * Método de listar os videos recomendados.
-<i class="no-highlight">112</i>&nbsp;   */
-<i class="no-highlight">113</i>&nbsp;
-<i class="no-highlight">114</i>&nbsp;  @Override
-<i class="no-highlight">115</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosRecomendados(VideosCategorias categoria,
-<i class="no-highlight">116</i>&nbsp;                                                   VideoRepository databaseClient) {
-<i class="no-highlight">117</i>&nbsp;
-<b class="fc"><i class="no-highlight">118</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<b class="fc"><i class="no-highlight">119</i>&nbsp;    Integer qtdFavoritados = 1;</b>
-<b class="fc"><i class="no-highlight">120</i>&nbsp;    return videoGateway.listarVideosRecomendados(categoria, qtdFavoritados);</b>
-<i class="no-highlight">121</i>&nbsp;  }
-<i class="no-highlight">122</i>&nbsp;
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;  /**
+<i class="no-highlight">43</i>&nbsp;   * Método de atualizar os videos.
+<i class="no-highlight">44</i>&nbsp;   */
+<i class="no-highlight">45</i>&nbsp;  @Override
+<i class="no-highlight">46</i>&nbsp;  public Mono&lt;VideoRecord&gt; atualizarVideo(
+<i class="no-highlight">47</i>&nbsp;          Mono&lt;VideoRecord&gt; videoRecord, Integer id, VideoRepository videoRepository) {
+<i class="no-highlight">48</i>&nbsp;
+<b class="fc"><i class="no-highlight">49</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(videoRepository);</b>
+<i class="no-highlight">50</i>&nbsp;
+<b class="fc"><i class="no-highlight">51</i>&nbsp;    var videoEncontrado = videoGateway.buscarVideoPorId(id);</b>
+<i class="no-highlight">52</i>&nbsp;
+<b class="fc"><i class="no-highlight">53</i>&nbsp;    if (videoEncontrado != null) {</b>
+<b class="fc"><i class="no-highlight">54</i>&nbsp;      return videoGateway.registrarVideo(videoRecord);</b>
+<i class="no-highlight">55</i>&nbsp;    } else {
+<b class="fc"><i class="no-highlight">56</i>&nbsp;      throw new RuntimeException(&quot;Não foi encontrado nenhum video com esse ID&quot;);</b>
+<i class="no-highlight">57</i>&nbsp;    }
+<i class="no-highlight">58</i>&nbsp;  }
+<i class="no-highlight">59</i>&nbsp;  /**
+<i class="no-highlight">60</i>&nbsp;   * Método de deletar os videos.
+<i class="no-highlight">61</i>&nbsp;   */
+<i class="no-highlight">62</i>&nbsp;
+<i class="no-highlight">63</i>&nbsp;  @Override
+<i class="no-highlight">64</i>&nbsp;  public Mono&lt;Void&gt; deletarVideo(Integer id, VideoRepository databaseClient) {
+<b class="fc"><i class="no-highlight">65</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;    var videoEncontrado = videoGateway.buscarVideoPorId(id);</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;    if (videoEncontrado != null) {</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;      return videoGateway.deletarVideoPorId(id);</b>
+<i class="no-highlight">69</i>&nbsp;    } else {
+<b class="fc"><i class="no-highlight">70</i>&nbsp;      throw new RuntimeException(</b>
+<i class="no-highlight">71</i>&nbsp;              &quot;Não foi encontrado na base um Video cadastrado com esse ID&quot;);
+<i class="no-highlight">72</i>&nbsp;    }
+<i class="no-highlight">73</i>&nbsp;  }
+<i class="no-highlight">74</i>&nbsp;
+<i class="no-highlight">75</i>&nbsp;  /**
+<i class="no-highlight">76</i>&nbsp;   * Método de deletar os videos.
+<i class="no-highlight">77</i>&nbsp;   */
+<i class="no-highlight">78</i>&nbsp;
+<i class="no-highlight">79</i>&nbsp;  @Override
+<i class="no-highlight">80</i>&nbsp;  public Mono&lt;Page&lt;VideoModel&gt;&gt; listarVideos(int page, int size, VideoRepository databaseClient) {
+<b class="fc"><i class="no-highlight">81</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<i class="no-highlight">82</i>&nbsp;
+<b class="fc"><i class="no-highlight">83</i>&nbsp;    PageRequest pageRequest =</b>
+<b class="fc"><i class="no-highlight">84</i>&nbsp;            PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, &quot;dataPublicacao&quot;));</b>
+<i class="no-highlight">85</i>&nbsp;
+<b class="fc"><i class="no-highlight">86</i>&nbsp;    return videoGateway.listarVideos(pageRequest);</b>
+<i class="no-highlight">87</i>&nbsp;  }
+<i class="no-highlight">88</i>&nbsp;
+<i class="no-highlight">89</i>&nbsp;  /**
+<i class="no-highlight">90</i>&nbsp;   * Método de deletar os videos.
+<i class="no-highlight">91</i>&nbsp;   */
+<i class="no-highlight">92</i>&nbsp;
+<i class="no-highlight">93</i>&nbsp;  @Override
+<i class="no-highlight">94</i>&nbsp;  public  Flux&lt;VideoModel&gt; listarVideosPorTitulo(String titulo, VideoRepository databaseClient) {
+<b class="fc"><i class="no-highlight">95</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<i class="no-highlight">96</i>&nbsp;
+<b class="fc"><i class="no-highlight">97</i>&nbsp;    return videoGateway.listarVideosPorTitulo(titulo);</b>
+<i class="no-highlight">98</i>&nbsp;  }
+<i class="no-highlight">99</i>&nbsp;
+<i class="no-highlight">100</i>&nbsp;  public  Flux&lt;VideoModel&gt; listarVideosPorData(LocalDate data, VideoRepository databaseClient) {
+<b class="fc"><i class="no-highlight">101</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<b class="fc"><i class="no-highlight">102</i>&nbsp;    return videoGateway.listarVideosPorDataPublicacao(data);</b>
+<i class="no-highlight">103</i>&nbsp;  }
+<i class="no-highlight">104</i>&nbsp;
+<i class="no-highlight">105</i>&nbsp;  public  Flux&lt;VideoModel&gt; listarVideosPorCategoria(VideosCategorias categoria,
+<i class="no-highlight">106</i>&nbsp;                                                    VideoRepository databaseClient) {
+<b class="fc"><i class="no-highlight">107</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<b class="fc"><i class="no-highlight">108</i>&nbsp;    return videoGateway.listarVideosPorCategoria(categoria);</b>
+<i class="no-highlight">109</i>&nbsp;  }
+<i class="no-highlight">110</i>&nbsp;
+<i class="no-highlight">111</i>&nbsp;  /**
+<i class="no-highlight">112</i>&nbsp;   * Método de listar os videos recomendados.
+<i class="no-highlight">113</i>&nbsp;   */
+<i class="no-highlight">114</i>&nbsp;
+<i class="no-highlight">115</i>&nbsp;  @Override
+<i class="no-highlight">116</i>&nbsp;  public Flux&lt;VideoModel&gt; listarVideosRecomendados(VideosCategorias categoria,
+<i class="no-highlight">117</i>&nbsp;                                                   VideoRepository databaseClient) {
+<i class="no-highlight">118</i>&nbsp;
+<b class="fc"><i class="no-highlight">119</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<b class="fc"><i class="no-highlight">120</i>&nbsp;    Integer qtdFavoritados = 1;</b>
+<b class="fc"><i class="no-highlight">121</i>&nbsp;    return videoGateway.listarVideosRecomendados(categoria, qtdFavoritados);</b>
+<i class="no-highlight">122</i>&nbsp;  }
 <i class="no-highlight">123</i>&nbsp;
-<i class="no-highlight">124</i>&nbsp;  /**
-<i class="no-highlight">125</i>&nbsp;   * Método de listar os videos recomendados.
-<i class="no-highlight">126</i>&nbsp;   */
-<i class="no-highlight">127</i>&nbsp;
-<i class="no-highlight">128</i>&nbsp;  @Override
-<i class="no-highlight">129</i>&nbsp;  public Mono&lt;VideoEstatisticasModel&gt; buscarEstatisticas(VideoRepository databaseClient) {
-<i class="no-highlight">130</i>&nbsp;
-<b class="fc"><i class="no-highlight">131</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
-<i class="no-highlight">132</i>&nbsp;
-<b class="fc"><i class="no-highlight">133</i>&nbsp;    return videoGateway.listarEstatisticas();</b>
-<i class="no-highlight">134</i>&nbsp;
-<i class="no-highlight">135</i>&nbsp;  }
-<i class="no-highlight">136</i>&nbsp;
+<i class="no-highlight">124</i>&nbsp;
+<i class="no-highlight">125</i>&nbsp;  /**
+<i class="no-highlight">126</i>&nbsp;   * Método de listar os videos recomendados.
+<i class="no-highlight">127</i>&nbsp;   */
+<i class="no-highlight">128</i>&nbsp;
+<i class="no-highlight">129</i>&nbsp;  @Override
+<i class="no-highlight">130</i>&nbsp;  public Mono&lt;VideoEstatisticasModel&gt; buscarEstatisticas(VideoRepository databaseClient) {
+<i class="no-highlight">131</i>&nbsp;
+<b class="fc"><i class="no-highlight">132</i>&nbsp;    IVideoGateway videoGateway = new VideoGateway(databaseClient);</b>
+<i class="no-highlight">133</i>&nbsp;
+<b class="fc"><i class="no-highlight">134</i>&nbsp;    return videoGateway.listarEstatisticas();</b>
+<i class="no-highlight">135</i>&nbsp;
+<i class="no-highlight">136</i>&nbsp;  }
 <i class="no-highlight">137</i>&nbsp;
-<i class="no-highlight">138</i>&nbsp;}
+<i class="no-highlight">138</i>&nbsp;
+<i class="no-highlight">139</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -237,7 +238,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-01-29 11:15</div>
+    <div style="float:right;">generated on 2024-02-04 18:22</div>
 </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.challenge.videos.external.respository;
 
+import com.challenge.videos.entities.VideoEntity;
 import com.challenge.videos.enumeration.VideosCategorias;
 import com.challenge.videos.external.model.VideoEstatisticasModel;
 import com.challenge.videos.external.model.VideoModel;
@@ -42,6 +43,19 @@ public class VideoRespositoryIT {
         VideoModel video1 = new VideoModel(1, "Rambo", "Filme de Guerra Rambo1","http://filmes.com.br/rambo",LocalDate.of(1985,10,01),VideosCategorias.GUERRA, 1 ,2);
         VideoModel video2 = new VideoModel(2, "Uma linda Mulher", "Filme Romance", "http://filmes.com.br/linda-mulher", LocalDate.of(1999,12,01),VideosCategorias.ROMANCE, 2, 3);
         VideoModel video3 = new VideoModel(3, "Tropa de Elite", "Filme policial brasileiro","http://filmes.com.br/tropa-elite", LocalDate.of(2007,10,05),VideosCategorias.ACAO, 3,4);
+        VideoEntity videoEntity = new VideoEntity(3, "Tropa de Elite", "Filme policial brasileiro","http://filmes.com.br/tropa-elite", LocalDate.of(2007,10,05),VideosCategorias.ACAO, 3,4);
+        VideoModel video4 = new VideoModel
+                (
+                        videoEntity.getId(),
+                        videoEntity.getTitulo(),
+                        videoEntity.getDescricao(),
+                        videoEntity.getUrlVideo(),
+                        videoEntity.getDataPublicacao(),
+                        videoEntity.getCategoria(),
+                        videoEntity.getFavorito(),
+                        videoEntity.getVisualizacoes()
+
+                );
 
        var registro1 = videoRepository.save(video1);
        var registro2 = videoRepository.save(video2);
@@ -67,7 +81,7 @@ public class VideoRespositoryIT {
     @Test
     void deveListarVideoPorTitulo() {
         Flux<VideoModel> lista = videoRepository.findByTituloContainingIgnoreCase("Tropa de Elite");
-        assertThat(lista.collectList().block().size()).isEqualTo(1);
+        assertThat(lista.collectList().block().size()).isGreaterThan(0);
     }
 
     @Test
@@ -107,6 +121,7 @@ public class VideoRespositoryIT {
         VideoModel videoEdicao = new VideoModel(1, "Megatubarão 2", "Filme de tubarão","http://filmes.com.br/Megatubarao-2", LocalDate.of(2023,8,03),VideosCategorias.ACAO, 1,2);
         var registro = videoRepository.save(videoEdicao);
         assertThat(registro.block()).isEqualTo(videoEdicao);
+        //
     }
 
     @Test

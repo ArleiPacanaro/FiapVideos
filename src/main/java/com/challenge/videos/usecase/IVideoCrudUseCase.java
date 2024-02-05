@@ -5,6 +5,7 @@ import com.challenge.videos.external.model.VideoEstatisticasModel;
 import com.challenge.videos.external.model.VideoModel;
 import com.challenge.videos.external.repository.VideoRepository;
 import com.challenge.videos.records.VideoRecord;
+import org.springframework.data.domain.Page;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +33,7 @@ public interface IVideoCrudUseCase {
     /**
      * Método de Método de listar os videos.
      */
-    public Flux<VideoModel> listarVideos(int page, int size, VideoRepository videoRepository);
+    public Mono<Page<VideoModel>> listarVideos(int page, int size, VideoRepository videoRepository);
 
     /**
      * Método de Método de listar os videos por titulo.

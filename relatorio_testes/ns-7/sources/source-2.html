@@ -50,18 +50,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    40%
+    20%
   </span>
   <span class="absValue">
-    (2/5)
+    (1/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    23,1%
+    7,7%
   </span>
   <span class="absValue">
-    (3/13)
+    (1/13)
   </span>
 </td>
 </tr>
@@ -107,7 +107,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc"><i class="no-highlight">32</i>&nbsp;  @SneakyThrows</b>
 <i class="no-highlight">33</i>&nbsp;  public Mono&lt;Void&gt; handle(final ServerWebExchange exchange, final Throwable throwable) {
 <i class="no-highlight">34</i>&nbsp;
-<b class="fc"><i class="no-highlight">35</i>&nbsp;    if (throwable instanceof WebExchangeBindException validationEx) {</b>
+<b class="nc"><i class="no-highlight">35</i>&nbsp;    if (throwable instanceof WebExchangeBindException validationEx) {</b>
 <b class="nc"><i class="no-highlight">36</i>&nbsp;      final Map&lt;String, String&gt; errors = getValidationErrors(validationEx);</b>
 <i class="no-highlight">37</i>&nbsp;
 <b class="nc"><i class="no-highlight">38</i>&nbsp;      exchange.getResponse().setStatusCode(HttpStatus.BAD_REQUEST);</b>
@@ -115,7 +115,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">40</i>&nbsp;
 <b class="nc"><i class="no-highlight">41</i>&nbsp;      return writeResponse(exchange, objectMapper.writeValueAsBytes(errors));</b>
 <i class="no-highlight">42</i>&nbsp;    } else {
-<b class="fc"><i class="no-highlight">43</i>&nbsp;      return Mono.error(throwable);</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;      return Mono.error(throwable);</b>
 <i class="no-highlight">44</i>&nbsp;    }
 <i class="no-highlight">45</i>&nbsp;  }
 <i class="no-highlight">46</i>&nbsp;
@@ -159,7 +159,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-01-29 11:15</div>
+    <div style="float:right;">generated on 2024-02-04 18:22</div>
 </div>
 </body>
 </html>
